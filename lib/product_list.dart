@@ -32,7 +32,7 @@ class _ProductListState extends State<ProductList> {
   );
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    // double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Column(
         children: [
@@ -98,9 +98,12 @@ class _ProductListState extends State<ProductList> {
           ),
 
           Expanded(
-            child: screenWidth > 600
-                ? GridList()
-                : ListView.builder(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return GridList();
+                } else {
+                  return ListView.builder(
                     itemCount: products.length,
                     itemBuilder: (BuildContext context, int index) {
                       final product = products[index];
@@ -119,9 +122,11 @@ class _ProductListState extends State<ProductList> {
                           price: '\$${product["price"]}',
                         ),
                       );
-                      // );
                     },
-                  ),
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),
